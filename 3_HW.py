@@ -14,4 +14,4 @@ rank = soup.select('#body-content > div.newest-list > div > table > tbody > tr >
 titles = soup.select('#body-content > div.newest-list > div > table > tbody > tr > td.info > a.title.ellipsis')
 singers = soup.select('#body-content > div.newest-list > div > table > tbody > tr > td.info > a.artist.ellipsis')
 for songlist in zip(rank, titles, singers):
-print(songlist[0].text.strip().split('\n')[0], songlist[1].text.strip(), songlist[2].text)
+    print(songlist[0].text.strip().split('\n')[0], songlist[1].text.strip(), songlist[2].text)
