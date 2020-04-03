@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>1주차 숙제의 페이지</title>
+        <!-- 메타 태그 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- JQuery를 import 합니다 -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+         crossorigin="anonymous"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+         crossorigin="anonymous"></script>
+
+    <!-- 부트스트랩 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100&display=swap" rel="stylesheet">
+
+    <!-- java script -->
+    <script type="text/javascript">
+    $(document).ready(function () {
+                $('#orders-box').html('');
+                listing();
+            });
+
+        function order() {
+            let name = $('#input').val();
+            let count = $('#book').val();
+            let address = $('#address').val();
+            let phone = $('#phone').val();
+
+            if (name == '') {
+                alert('이름을 입력해주세요')
+                $('#input').focus()
+                return
+            } else if (count == '') {
+                alert('수량을 입력해주세요')
+                $('#book').focus()
+                return
+            } else if (address == '') {
+                alert('주소를 입력해주세요')
+                $('#address').focus()
+                return
+            } else if (phone == '') {
+                alert('휴대폰번호를 입력해주세요')
+                $('#phone').focus()
+                return
+            }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/reviews',
+                    data: {'name':name,'count':count,'address':address,'phone':phone},
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            alert(response['msg']);
+                            window.location.reload();
+                        }
+                    }
+                });
+        }
+                    function listing() {
+                // 1. 리뷰 목록을 서버에 요청하기
+                // 2. 요청 성공 여부 확인하기
+                // 3. 요청 성공했을 때 리뷰를 올바르게 화면에 나타내기
+                $.ajax({
+                    type: "GET",
+                    url: "/reviews",
+                    data: {},
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            let rows = response['data']
+                            for (let i = 0; i < rows.length; i++){
+                                let name = rows[i]['name'];
+                                let count = rows[i]['count'];
+                                let address = rows[i]['address'];
+                                let phone = rows[i]['phone'];
+                                make_card(name, count, address, phone);
+                            }
+                        } else {
+                            alert('주문이 되지 않았습니다.');
+                        }
+                    }
+                });
+            }
+            function make_card(name, count, address, phone) {
+                let temp_html = '<tr>\
+                                    <td>'+ name + '</td>\
+                                    <td>'+ count + '</td>\
+                                    <td>'+ address + '</td>\
+                                    <td>'+ phone + '</td>\
+                                </tr>';
+                $('#orders-box').append(temp_html);
+            }
+
+    </script>
+
+    <!-- 스타일 -->
+    <style>
+        .mytitle>h1 {
+            color: #000;
+        }
+
+        .mytitle>h3 {
+            color: black;
+        }
+
+        .mytitle>h5 {
+            color: grey;
+        }
+
+        .mytitle {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="my-image">
+        <img src="https://bimage.interpark.com/milti/bookPark/meet/live/img/live_img_53197.JPG"
+            style="max-width: 100%; height: auto;">
+    </div>
+
+    <div class="mytitle">
+        <h1>경애의 마음 </h1>
+        <h3>가격: 14,000원</h3>
+        <p>
+            <h5>
+                2014년 출간한 첫번째 소설집 [센티멘털도 하루 이틀]로 신동엽문학상을, 2016년 [너무 한낮의 연애]로 젊은작가상 대상을, 이듬해 [체스의 모든 것]으로 현대문학상을 수상하며
+                한국문학의 빛나는 기대주로 급부상한 소설가 김금희의 첫번째 장편소설 [경애의 마음]이 출간되었다. 2017년 봄부터 겨울까지 계간 [창작과비평]에 연재하며 문단의 호평과 독자의 기대를
+                한껏 받은 [경애의 마음]은, 성석제 장편소설 [투명인간], 김애란 장편소설 [두근두근 내 인생] 등 [창작과비평] 장편소설 연재작 흥행 계보를 잇는 2018년 최고의 기대작으로, 출간
+                전 실시한 300명 사전서평단 이벤트에서도 압도적 지지를 받으며 독자들의 뜨거운 반응을 불러일으켰다.
+        </p>
+        <p>고등학교 시절 호프집 화재사건에서 운 좋게 살아남은 경애와 같은 사고 현장에서 단 한명의 소중한 친구를 잃은
+            상수가 서로의 연결고리를 모른 채 ‘반도미싱’에서 팀장과 팀원으로 만나며 시작되는 이 소설에는 지금 이 시대를 살아가는 우리
+            모두의 마음이 켜켜이 담겨 있다. 읽는 사람에 따라 보는 각도에 따라 다양한 이야기를 읽어낼 수 있는 [경애의 마음]은 한가지 독법으로 해석할 수 없을 만큼 다층적으로 읽히는 수작이다.
+            이 미덥고도 소중한 소설을 곁에 둔다면 지난 세월 우리가 견뎌온 아픈 시간이 다정한 목소리와 따뜻한 유머로 위로되고,
+            앞으로의 삶을 좀더 단단하고 건강한 마음으로 맞을 수 있게 될 것이다.</p>
+        </h5>
+    <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">주문자명</span>
+  </div>
+  <input type="text" id="input" class="form-control" placeholder="받으실분의 성함을 입력해주세요." aria-label="Username" aria-describedby="basic-addon1">
+</div>
+    <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">수량</span>
+  </div>
+  <input type="number" id="book" class="form-control" placeholder="숫자만 입력해주세요. " aria-label="Username" aria-describedby="basic-addon1">
+</div>
+        <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">배송지</span>
+  </div>
+  <input type="text" id="address" class="form-control" placeholder="배송받을 주소를 입력해주세요." aria-label="Username" aria-describedby="basic-addon1">
+</div>
+         <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">연락처</span>
+  </div>
+  <input type="text" id="phone" class="form-control" placeholder="숫자만 입력해주세요." aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+    </form>
+    <button onclick="order()" type="button" class="btn btn-outline-secondary"
+    style="margin-top: 10px; margin-bottom: 30px; color: #5f0080;">주문하기</button>
+    </div>
+            <div class="orders">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">이름</th>
+                            <th scope="col">수량</th>
+                            <th scope="col">주소</th>
+                            <th scope="col">전화번호</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-box">
+                        <tr>
+                            <td>@mdo</td>
+                            <td>@mdo</td>
+                            <td>@mdo</td>
+                            <td>@mdo</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+</body>
+
+</html>
